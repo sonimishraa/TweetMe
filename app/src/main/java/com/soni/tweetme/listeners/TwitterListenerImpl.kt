@@ -17,10 +17,9 @@ class TwitterListenerImpl(
     private val firebaseDB = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-
     override fun onLayoutClick(tweet: Tweet?) {
         tweet?.let {
-            val owner = tweet.userIds?.get(0)  // userIds[0] is Always the owner's
+            val owner = tweet.userIds?.first()  // userIds[0] is Always the owner's
             if (owner != userId) {
                 if (user?.followUsers?.contains(owner) == true) {
                     AlertDialog.Builder(tweetList.context)
@@ -104,21 +103,15 @@ class TwitterListenerImpl(
         }
     }
 
-    // When ReTweet-Icon is CLICKED!
-    override fun onRetweet(tweet: Tweet?) {
+    // When Delete-Icon is CLICKED!
+    override fun onDelete(tweet: Tweet?) {
         tweet?.let {
             tweetList.isClickable = false
-
-            val retweets = tweet.userIds // contains userIds who tweeted this Tweet
-            if (retweets?.contains(userId)!!) {
-                retweets.remove(userId)
-            } else {
-                retweets.add(userId!!)
-            }
-
+            val userIds = tweet.userIds
+            userIds?.remove(userId)
             // UPDATE Db
             firebaseDB.collection(DATA_TWEETS).document(tweet.tweetId!!)
-                .update(DATA_TWEET_USER_IDS, retweets)
+                .update(DATA_TWEET_USER_IDS, userIds)
                 .addOnSuccessListener {
                     tweetList.isClickable = true
                     callback?.onRefresh()

@@ -1,15 +1,16 @@
 package com.soni.tweetme.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.paolo_manlunas.twitterclone.listeners.IHomeCallback
 import com.paolo_manlunas.twitterclone.listeners.TwitterListenerImpl
 import com.soni.tweetme.databinding.FragmentMainBinding
 import com.soni.tweetme.network.response.Tweet
+import com.soni.tweetme.ui.TweetActivity
 import com.soni.tweetme.ui.adapters.TweetListAdapter
 import com.soni.tweetme.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
     private var binding by autoCleared<FragmentMainBinding>()
+    lateinit var tweetListAdapter: TweetListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initUI() {
-        val tweetListAdapter = TweetListAdapter(userId, arrayListOf())
+        tweetListAdapter = TweetListAdapter(userId, arrayListOf())
         tweetListAdapter.setListener(
             TwitterListenerImpl(
                 binding.tweetList,
@@ -53,12 +55,6 @@ class MainFragment : BaseFragment() {
         binding.tweetList.apply {
             adapter = tweetListAdapter
             setHasFixedSize(true)
-            addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
         }
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -71,6 +67,16 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initListener() {
+        binding.fab.setOnClickListener {
+            val intent = Intent(requireContext(), TweetActivity::class.java)
+            intent.apply {
+                putExtra(TweetActivity.PARAM_USER_ID, userId)
+                putExtra(TweetActivity.PARAM_USER_NAME, user?.displayName)
+            }
+            startActivity(
+                intent
+            )
+        }
     }
 
     /** FROM: TwitterFragment abstract method */
@@ -86,7 +92,8 @@ class MainFragment : BaseFragment() {
                 }
                 val sortedList = tweets.sortedWith(compareByDescending { it.timestamp })
                 Log.i("jaimatadi", "sortedlist = ${sortedList.size}")
-                tweetsAdapter?.updateTweets(sortedList)
+                Log.i("jaimatadi", "tweetsAdapter = ${tweetListAdapter}")
+                tweetListAdapter?.updateTweets(sortedList)
                 binding.tweetList.updateVisibility(true)
             }
             .addOnFailureListener {
@@ -98,7 +105,7 @@ class MainFragment : BaseFragment() {
 
     private fun populate() {
         binding.progressLayout.updateVisibility(true)
-        firebaseDB.collection(DATA_USERS).document(userId!!).get()
+        firebaseDB.collection(DATA_USERS).document(userId).get()
             .addOnSuccessListener { documentSnapshot ->
                 binding.progressLayout.updateVisibility(false)
                 updateList()

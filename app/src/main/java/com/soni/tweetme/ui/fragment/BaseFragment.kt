@@ -7,14 +7,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.paolo_manlunas.twitterclone.listeners.IHomeCallback
 import com.paolo_manlunas.twitterclone.listeners.TwitterListenerImpl
 import com.soni.tweetme.network.response.User
-import com.soni.tweetme.ui.adapters.TweetListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
-    protected var tweetsAdapter: TweetListAdapter? = null
     protected var currentUser: User? = null
     protected val firebaseDB = FirebaseFirestore.getInstance()
+    protected val user = FirebaseAuth.getInstance().currentUser
     protected val userId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
     protected var listenerI: TwitterListenerImpl? = null
     protected var callback: IHomeCallback? = null
