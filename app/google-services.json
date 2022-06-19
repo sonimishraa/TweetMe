@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "923905540325",
+    "project_id": "tweetme-a5731",
+    "storage_bucket": "tweetme-a5731.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923905540325:android:74b1ed94ae6f36d86e140c",
+        "android_client_info": {
+          "package_name": "com.soni.tweetme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923905540325-em4jem8spfmvprtt9fvioacb63ecr3q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLOAKnHn1Ii15xFdLK9iV14q5KZsyC7Vs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923905540325-em4jem8spfmvprtt9fvioacb63ecr3q2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
