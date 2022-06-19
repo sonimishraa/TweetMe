@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.LoginActivity">
 
-        <include layout="@layout/content_main" />
+        <include layout="@layout/content_login" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

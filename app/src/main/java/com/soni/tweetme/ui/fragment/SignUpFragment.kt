@@ -12,31 +12,36 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.soni.tweetme.R
-import com.soni.tweetme.databinding.FragmentLoginBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.soni.tweetme.databinding.FragmentSignupBinding
+import com.soni.tweetme.network.response.User
 import com.soni.tweetme.ui.MainActivity
+import com.soni.tweetme.utils.DATA_USERS
 import com.soni.tweetme.utils.autoCleared
 import com.soni.tweetme.utils.updateVisibility
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
-    private var binding by autoCleared<FragmentLoginBinding>()
+class SignUpFragment : Fragment() {
+    private var binding by autoCleared<FragmentSignupBinding>()
+
+    private val firebaseDB = FirebaseFirestore.getInstance()
+
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     private val firebaseAuthListener = FirebaseAuth.AuthStateListener {
         val user = firebaseAuth.currentUser?.uid
         user?.let {
             startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = FragmentSignupBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -55,16 +60,18 @@ class LoginFragment : Fragment() {
     }
 
     private fun initListener() {
+        setTextChangeListener(binding.nameEditText, binding.nameLayout)
         setTextChangeListener(binding.emailEditText, binding.emailLayout)
         setTextChangeListener(binding.passwordEditText, binding.passwordLayout)
+
         binding.progressLayout.setOnTouchListener { v, event ->
             true
         }
-        binding.login.setOnClickListener {
-            onLogin()
+        binding.buttonSignup.setOnClickListener {
+            onSignup()
         }
-        binding.signUp.setOnClickListener {
-            findNavController().navigate(R.id.actionSignUp)
+        binding.signupTV.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
@@ -80,7 +87,6 @@ class LoginFragment : Fragment() {
 * */
     override fun onStart() {
         super.onStart()
-
         // pass the firebaseAuthListener to see if user is still logged-in
         firebaseAuth.addAuthStateListener(firebaseAuthListener)
     }
@@ -93,9 +99,15 @@ class LoginFragment : Fragment() {
     }
 
 
-    // On-Login
-    fun onLogin() {
+    fun onSignup() {
         var proceed = true
+
+        // Username Check
+        if (binding.nameEditText.text.isNullOrEmpty()) {
+            binding.nameLayout.error = "Username is required"
+            binding.nameLayout.isErrorEnabled = true
+            proceed = false
+        }
 
         // Email Check
         if (binding.emailEditText.text.isNullOrEmpty()) {
@@ -111,25 +123,38 @@ class LoginFragment : Fragment() {
             proceed = false
         }
 
-        // if Login proceeds
+        // if Signup proceeds
         if (proceed) {
-            // show progressbar
             binding.progressLayout.updateVisibility(true)
 
-            // login with Firebase Auth
-            firebaseAuth.signInWithEmailAndPassword(
+            // Signup with Firebase Auth
+            firebaseAuth.createUserWithEmailAndPassword(
                 binding.emailEditText.text.toString(),
                 binding.passwordEditText.text.toString()
             )
                 .addOnCompleteListener {
                     if (!it.isSuccessful) {
-                        binding.progressLayout.updateVisibility(false)
                         Toast.makeText(
                             requireContext(),
-                            "Login Error: ${it.exception?.localizedMessage}",
+                            "Signup Error: ${it.exception?.localizedMessage}",
                             Toast.LENGTH_LONG
                         ).show()
+                    } else {
+                        /* Create User in FirebaseDB */
+                        val email = binding.emailEditText.text.toString()
+                        val username = binding.nameEditText.text.toString()
+
+                        // User data class Object (from util)
+                        val user = User(email, username, "", arrayListOf(), arrayListOf())
+
+                        /* Add 'user' Object to DB:
+                        *  firebaseAuth.uid!! connects the the Auth user and corresponding DB with UID.
+                        *  - Create Collection with DATA_USERS constant
+                        *  - set() will Save 'user' object in Collection.
+                        * */
+                        firebaseDB.collection(DATA_USERS).document(firebaseAuth.uid!!).set(user)
                     }
+                    binding.progressLayout.updateVisibility(false)
                 }
                 .addOnFailureListener {
                     it.printStackTrace()
