@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/MainFragment"
         android:name=".ui.fragment.MainFragment"
-        tools:layout="@layout/fragment_main"></fragment>
+        tools:layout="@layout/fragment_main" />
 
 </navigation>

@@ -28,6 +28,7 @@
                 android:paddingStart="@dimen/grid_1x"
                 android:paddingEnd="@dimen/grid_1x"
                 android:text="Username"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!-- VIEW: Text: Tweet -->

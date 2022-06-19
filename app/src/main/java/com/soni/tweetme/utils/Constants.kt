@@ -20,3 +20,6 @@ val DATA_TWEET_HASHTAGS = "hashtags"
 val DATA_TWEET_LIKES = "likes"
 
 val DATA_TWEET_IMAGES = "TweetImages"
+
+val PARAM_USER_ID = "UserId"
+val PARAM_USER_NAME = "UserName"

@@ -1,7 +1,6 @@
 package com.soni.tweetme.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -157,19 +156,5 @@ class TweetActivity : AppCompatActivity() {
         }
 
         return hashtags
-    }
-
-
-    //--- Intent
-    companion object {
-        val PARAM_USER_ID = "UserId"
-        val PARAM_USER_NAME = "UserName"
-
-        fun newIntent(context: Context, userId: String?, userName: String?): Intent {
-            val intent = Intent(context, TweetActivity::class.java)
-            intent.putExtra(PARAM_USER_ID, userId)
-            intent.putExtra(PARAM_USER_NAME, userName)
-            return intent
-        }
     }
 }
