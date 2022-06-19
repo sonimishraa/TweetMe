@@ -32,7 +32,6 @@ class MainFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        initObserver()
         initListener()
     }
 
@@ -61,9 +60,6 @@ class MainFragment : BaseFragment() {
             binding.swipeRefresh.isRefreshing = false
             updateList()
         }
-    }
-
-    private fun initObserver() {
     }
 
     private fun initListener() {
