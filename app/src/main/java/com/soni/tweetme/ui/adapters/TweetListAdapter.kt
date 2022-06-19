@@ -94,6 +94,4 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
         tweets.addAll(newTweets)
         notifyDataSetChanged()
     }
-
-
 }
