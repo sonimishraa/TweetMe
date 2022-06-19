@@ -12,6 +12,7 @@ import com.soni.tweetme.R
 import com.soni.tweetme.network.response.Tweet
 import com.soni.tweetme.utils.getDate
 import com.soni.tweetme.utils.loadUrl
+import com.soni.tweetme.utils.updateVisibility
 
 class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
     RecyclerView.Adapter<TweetListAdapter.TweetViewHolder>() {
@@ -44,24 +45,16 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
         fun bind(userId: String, tweet: Tweet, listenerI: ITweetListener?) {
             username.text = tweet.username
             text.text = tweet.text
-
-            // tweeted Image
-            if (tweet.imageUrl.isNullOrEmpty()) {
-                image.visibility = View.GONE
-            } else {
-                image.visibility = View.VISIBLE
-                image.loadUrl(tweet.imageUrl)
-            }
+            image.updateVisibility(tweet.imageUrl.isNullOrEmpty().not())
+            image.loadUrl(tweet.imageUrl)
 
             date.text = getDate(tweet.timestamp)
             likeCount.text = tweet.likes?.size.toString()
 
-            // call listener when user Clicks on:
             layout.setOnClickListener { listenerI?.onLayoutClick(tweet) }
             like.setOnClickListener { listenerI?.onLike(tweet) }
             tweetDelete.setOnClickListener { listenerI?.onDelete(tweet) }
 
-            // check if user already 'like' this tweet or not:
             if (tweet.likes?.contains(userId) == true) {
                 like.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.like))
             } else {
@@ -71,20 +64,6 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
                         R.drawable.like_inactive
                     )
                 )
-            }
-
-            // check if user's original tweet, if not, if has already re-tweeted
-            when {
-                // userId[0] is the original tweeter userId
-                tweet.userIds?.first().equals(userId) -> {
-                    tweetDelete.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            like.context,
-                            R.drawable.delete_tweet
-                        )
-                    )
-                    tweetDelete.isClickable = true
-                }
             }
         }
     }
