@@ -12,4 +12,5 @@
     <dimen name="standard_image">50dp</dimen>
     <dimen name="search_input_height">40dp</dimen>
     <dimen name="small_image">30dp</dimen>
+    <dimen name="dimen_5">5dp</dimen>
 </resources>
