@@ -17,5 +17,6 @@
 
     <string name="text_signup">No Account? Go to Signup</string>
     <string name="text_login">Already have an account? Go to Login</string>
+    <string name="desc_post_an_image">Post an Image</string>
 
 </resources>

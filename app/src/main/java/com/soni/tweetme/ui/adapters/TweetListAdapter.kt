@@ -15,23 +15,12 @@ import com.soni.tweetme.utils.loadUrl
 
 class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
     RecyclerView.Adapter<TweetListAdapter.TweetViewHolder>() {
-
     private var listenerI: ITweetListener? = null
 
-
-    /** Functions */
     fun setListener(listenerI: ITweetListener?) {
         this.listenerI = listenerI
     }
 
-    fun updateTweets(newTweets: List<Tweet>) {
-        tweets.clear()
-        tweets.addAll(newTweets)
-        notifyDataSetChanged()
-    }
-
-
-    /** Override Members */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TweetViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_tweet, parent, false)
     )
@@ -42,10 +31,7 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
         holder.bind(userId, tweets[position], listenerI)
     }
 
-
-    /**  VIEW-HOLDER */
     class TweetViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-
         private val layout = v.findViewById<ViewGroup>(R.id.tweetLayout)
         private val username = v.findViewById<TextView>(R.id.tweetUsername)
         private val text = v.findViewById<TextView>(R.id.tweetText)
@@ -53,8 +39,7 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
         private val date = v.findViewById<TextView>(R.id.tweetDate)
         private val like = v.findViewById<ImageView>(R.id.tweetLike)
         private val likeCount = v.findViewById<TextView>(R.id.tweetLikeCount)
-        private val retweet = v.findViewById<ImageView>(R.id.tweetRetweet)
-        private val retweetCount = v.findViewById<TextView>(R.id.tweetRetweetCount)
+        private val tweetDelete = v.findViewById<ImageView>(R.id.tweetDelete)
 
         fun bind(userId: String, tweet: Tweet, listenerI: ITweetListener?) {
             username.text = tweet.username
@@ -70,13 +55,11 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
 
             date.text = getDate(tweet.timestamp)
             likeCount.text = tweet.likes?.size.toString()
-            retweetCount.text =
-                tweet.userIds?.size?.minus(1).toString() // -1 person who originally tweeted
 
             // call listener when user Clicks on:
             layout.setOnClickListener { listenerI?.onLayoutClick(tweet) }
             like.setOnClickListener { listenerI?.onLike(tweet) }
-            retweet.setOnClickListener { listenerI?.onRetweet(tweet) }
+            tweetDelete.setOnClickListener { listenerI?.onDelete(tweet) }
 
             // check if user already 'like' this tweet or not:
             if (tweet.likes?.contains(userId) == true) {
@@ -93,32 +76,24 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>) :
             // check if user's original tweet, if not, if has already re-tweeted
             when {
                 // userId[0] is the original tweeter userId
-                tweet.userIds?.get(0).equals(userId) -> {
-                    retweet.setImageDrawable(
+                tweet.userIds?.first().equals(userId) -> {
+                    tweetDelete.setImageDrawable(
                         ContextCompat.getDrawable(
                             like.context,
-                            R.drawable.original
+                            R.drawable.delete_tweet
                         )
                     )
-                    retweet.isClickable = false
-                }
-                tweet.userIds?.contains(userId) == true -> {
-                    retweet.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            like.context,
-                            R.drawable.retweet
-                        )
-                    )
-                }
-                else -> {
-                    retweet.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            like.context,
-                            R.drawable.retweet_inactive
-                        )
-                    )
+                    tweetDelete.isClickable = true
                 }
             }
         }
     }
+
+    fun updateTweets(newTweets: List<Tweet>) {
+        tweets.clear()
+        tweets.addAll(newTweets)
+        notifyDataSetChanged()
+    }
+
+
 }
