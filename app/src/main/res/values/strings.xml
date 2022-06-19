@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">TweetMe</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_user_name">Username</string>
+    <string name="hint_search">Search</string>
+    <string name="hint_tweet_text">What\'s Up?</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_signup">Signup</string>
+    <string name="button_apply">Apply</string>
+    <string name="button_logout">Logout</string>
+
+    <string name="text_signup">No Account? Go to Signup</string>
+    <string name="text_login">Already have an account? Go to Login</string>
+
 </resources>
