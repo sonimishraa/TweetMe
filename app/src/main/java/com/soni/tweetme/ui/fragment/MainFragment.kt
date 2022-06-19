@@ -15,7 +15,7 @@ import com.soni.tweetme.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : TwitterFragment() {
+class MainFragment : BaseFragment() {
     private var binding by autoCleared<FragmentMainBinding>()
 
     override fun onCreateView(

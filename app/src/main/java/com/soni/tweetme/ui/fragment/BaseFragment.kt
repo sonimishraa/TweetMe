@@ -11,7 +11,7 @@ import com.soni.tweetme.ui.adapters.TweetListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-abstract class TwitterFragment : Fragment() {
+abstract class BaseFragment : Fragment() {
     protected var tweetsAdapter: TweetListAdapter? = null
     protected var currentUser: User? = null
     protected val firebaseDB = FirebaseFirestore.getInstance()
