@@ -8,6 +8,15 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name=".ui.fragment.LoginFragment"
-        tools:layout="@layout/fragment_login"></fragment>
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/actionSignUp"
+            app:destination="@+id/SignUp" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SignUp"
+        android:name=".ui.fragment.SignUpFragment"
+        tools:layout="@layout/fragment_signup" />
 
 </navigation>
