@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.soni.tweetme.databinding.FragmentMainBinding
+import com.soni.tweetme.databinding.FragmentLoginBinding
 import com.soni.tweetme.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
-    private var binding by autoCleared<FragmentMainBinding>()
+class LoginFragment : Fragment() {
+    private var binding by autoCleared<FragmentLoginBinding>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
