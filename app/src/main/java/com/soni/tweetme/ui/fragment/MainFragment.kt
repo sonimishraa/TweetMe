@@ -66,8 +66,8 @@ class MainFragment : BaseFragment() {
         binding.fab.setOnClickListener {
             val intent = Intent(requireContext(), TweetActivity::class.java)
             intent.apply {
-                putExtra(TweetActivity.PARAM_USER_ID, userId)
-                putExtra(TweetActivity.PARAM_USER_NAME, user?.displayName)
+                putExtra(PARAM_USER_ID, userId)
+                putExtra(PARAM_USER_NAME, user?.displayName)
             }
             startActivity(
                 intent
