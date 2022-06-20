@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.soni.tweetme.R
 import com.soni.tweetme.databinding.FragmentTweetPostBinding
-import com.soni.tweetme.utils.REQUEST_CODE_PHOTO
 import com.soni.tweetme.utils.loadUrl
 import com.soni.tweetme.utils.updateVisibility
 import com.soni.tweetme.viewmodel.MainViewModel
@@ -89,32 +90,15 @@ class TweetPostFragment : Fragment() {
 
     private fun initListener() {
         binding.fabPhoto.setOnClickListener {
-            addImage()
+            launchImagePickIntent()
         }
 
         binding.tweetImage.setOnClickListener {
-            addImage()
+            launchImagePickIntent()
         }
 
         binding.fabSend.setOnClickListener {
             postTweet()
-        }
-    }
-
-    // Add Tweet Image
-    fun addImage() {
-        /** The Intent refers to the intent action for picking the Photo from the device's storage */
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        // when starting for activityResult, override onActivityResult()
-        startActivityForResult(intent, REQUEST_CODE_PHOTO)
-    }
-
-    /** Process onActivityResult */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_PHOTO) {
-            storeImage(data?.data)
         }
     }
 
@@ -130,4 +114,18 @@ class TweetPostFragment : Fragment() {
         val text = binding.tweetText.text.toString()
         viewModel.postTweet(text, userName, imageUrl)
     }
+
+    private fun launchImagePickIntent() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startForResult.launch(intent)
+    }
+
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                storeImage(result.data?.data)
+            } else Toast.makeText(requireContext(), "something went wrong", Toast.LENGTH_SHORT)
+                .show()
+        }
 }
