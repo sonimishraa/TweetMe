@@ -18,7 +18,7 @@ TweetMe app has following features:
     
 
 
-How it works:
+## How it works:
 
 User can press on Login with Login button from the Login Screen where user can entered their
 credential for the login.
@@ -31,7 +31,7 @@ to  sign-up and after sign-up it will go to user's posted Tweet.
 
 Maximum 150 character's are allowed for text to post
 
-Requirements:
+## Requirements:
 
 JDK 11 
 Android Stuido Version : Android Studio Dolphin | 2021.3.1 Canary 3
@@ -41,5 +41,5 @@ Min SDK Version : API-26 (Android-8 (Orio))
 Target SDK Version : API-32 (Android-12)
 Reference of API: https://developer.android.com/studio/releases/platforms
 
-For App Reference I have attached screenshots
+## For App Reference I have attached screenshots
 
