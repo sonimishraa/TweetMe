@@ -41,7 +41,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initUI() {
-        tweetListAdapter = TweetListAdapter(userId, appExecutors)
+        tweetListAdapter = TweetListAdapter(appExecutors)
         tweetListAdapter.setListener(
             TwitterListenerImpl(
                 binding.tweetList,

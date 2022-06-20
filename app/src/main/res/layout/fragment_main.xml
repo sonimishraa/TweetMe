@@ -34,7 +34,9 @@
                             android:id="@+id/tweetList"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clipToPadding="false"
                             android:orientation="vertical"
+                            android:paddingBottom="@dimen/dimen_80"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="5" />
                     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

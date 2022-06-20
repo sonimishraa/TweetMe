@@ -2,10 +2,8 @@ package com.soni.tweetme.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.paolo_manlunas.twitterclone.listeners.ITweetListener
-import com.soni.tweetme.R
 import com.soni.tweetme.databinding.ItemTweetBinding
 import com.soni.tweetme.network.response.Tweet
 import com.soni.tweetme.utils.AppExecutors
@@ -14,7 +12,6 @@ import com.soni.tweetme.utils.loadUrl
 import com.soni.tweetme.utils.updateVisibility
 
 class TweetListAdapter(
-    val userId: String,
     executors: AppExecutors
 ) : DataBoundListAdapter<Tweet, ItemTweetBinding>
     (appExecutors = executors, diffcallBack = object : DiffUtil.ItemCallback<Tweet>() {
@@ -42,28 +39,7 @@ class TweetListAdapter(
         binding.tweetText.text = tweet.text
         binding.tweetImage.updateVisibility(tweet.imageUrl.isNullOrEmpty().not())
         binding.tweetImage.loadUrl(tweet.imageUrl)
-
         binding.tweetDate.text = getDate(tweet.timestamp)
-        binding.tweetLikeCount.text = tweet.likes?.size.toString()
-
-//        binding.tweetLayout.setOnClickListener { listenerI?.onLayoutClick(tweet) }
-        binding.tweetLike.setOnClickListener { listenerI?.onLike(tweet) }
         binding.tweetDelete.setOnClickListener { listenerI?.onDelete(tweet) }
-
-        if (tweet.likes?.contains(userId) == true) {
-            binding.tweetLike.setImageDrawable(
-                ContextCompat.getDrawable(
-                    binding.tweetLike.context,
-                    R.drawable.like
-                )
-            )
-        } else {
-            binding.tweetLike.setImageDrawable(
-                ContextCompat.getDrawable(
-                    binding.tweetLike.context,
-                    R.drawable.like_inactive
-                )
-            )
-        }
     }
 }

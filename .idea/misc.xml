@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/delete_tweet.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/icon_delete.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/logo_name.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/standard_button_rounded.xml" value="0.1" />
