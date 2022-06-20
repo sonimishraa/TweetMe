@@ -3,19 +3,19 @@
 Core Features:
 User can see the list of post User tweet after Login
 
-##TweetMe app has following features:
+## TweetMe app has following features:
 
 *
-    - Sign up, Sign In, and Sign Out
+    Sign up, Sign In, and Sign Out
     
 *
-    - User can post to a timeline
+    User can post to a timeline
     
 *
-    - User can delete their own post
+    User can delete their own post
     
 *
-    - Post/Timeline view page
+    Post/Timeline view page
     
 
 
