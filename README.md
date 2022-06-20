@@ -6,12 +6,16 @@ User can see the list of post User tweet after Login
 TweetMe app has following features:
 *
     - Sign up, Sign In, and Sign Out
+    
 *
     - User can post to a timeline
+    
 *
     - User can delete their own post
+    
 *
     - Post/Timeline view page
+    
 *
 
 How it works:
