@@ -1,50 +1,72 @@
-package com.soni.tweetme.ui
+package com.soni.tweetme.ui.fragment
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.soni.tweetme.R
-import com.soni.tweetme.databinding.ActivityTweetBinding
+import com.soni.tweetme.databinding.FragmentTweetPostBinding
 import com.soni.tweetme.network.response.Tweet
 import com.soni.tweetme.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 
-class TweetActivity : AppCompatActivity() {
-
+@AndroidEntryPoint
+class TweetPostFragment : Fragment() {
+    val args: TweetPostFragmentArgs by navArgs()
     private val firebaseDB = FirebaseFirestore.getInstance()
     private val firebaseStorage = FirebaseStorage.getInstance().reference
     private var imageUrl: String? = null
     private var userId: String? = null
     private var userName: String? = null
-    private lateinit var binding: ActivityTweetBinding
+    private lateinit var binding: FragmentTweetPostBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentTweetPostBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initUI()
+        initListener()
     }
 
     private fun initUI() {
-        binding =
-            DataBindingUtil.setContentView(this, R.layout.activity_tweet)
-        if (intent.hasExtra(PARAM_USER_ID) && intent.hasExtra(PARAM_USER_NAME)) {
-            userId = intent.getStringExtra((PARAM_USER_ID))
-            userName = intent.getStringExtra((PARAM_USER_NAME))
-        } else {
-            Toast.makeText(this, "Error creating tweet", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        userId = args.userId
+        userName = args.userName
         binding.tweetProgressLayout.setOnTouchListener { _, _ -> true }
     }
 
+    private fun initListener() {
+        binding.fabPhoto.setOnClickListener {
+            addImage()
+        }
+
+        binding.tweetImage.setOnClickListener {
+            addImage()
+        }
+
+        binding.fabSend.setOnClickListener {
+            postTweet()
+        }
+    }
 
     // Add Tweet Image
-    fun addImage(view: View) {
+    fun addImage() {
         /** The Intent refers to the intent action for picking the Photo from the device's storage */
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -90,7 +112,7 @@ class TweetActivity : AppCompatActivity() {
     }
 
     private fun onTweetImageFail() {
-        Toast.makeText(this, "Image tweet failed. Try again..", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), "Image tweet failed. Try again..", Toast.LENGTH_SHORT)
             .show()
         binding.tweetProgressLayout.updateVisibility(false)
     }
@@ -98,7 +120,7 @@ class TweetActivity : AppCompatActivity() {
 
     // -----------------------------------------//
     // Post a Tweet
-    fun postTweet(view: View) {
+    fun postTweet() {
         binding.tweetProgressLayout.updateVisibility(true)
         // GET: data
         val text = binding.tweetText.text.toString()
@@ -118,11 +140,11 @@ class TweetActivity : AppCompatActivity() {
         )
 
         tweetId.set(tweet)
-            .addOnCompleteListener { finish() }
+            .addOnCompleteListener { findNavController().popBackStack() }
             .addOnFailureListener {
                 it.printStackTrace()
                 binding.tweetProgressLayout.updateVisibility(false)
-                Toast.makeText(this, "Failed to post tweet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to post tweet", Toast.LENGTH_SHORT).show()
             }
     }
 

@@ -8,6 +8,22 @@
     <fragment
         android:id="@+id/MainFragment"
         android:name=".ui.fragment.MainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/actionTweet"
+            app:destination="@+id/TweetFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/TweetFragment"
+        android:name=".ui.fragment.TweetPostFragment"
+        tools:layout="@layout/activity_tweet">
+        <argument
+            android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="userName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

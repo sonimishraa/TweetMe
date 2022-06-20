@@ -21,5 +21,5 @@ val DATA_TWEET_LIKES = "likes"
 
 val DATA_TWEET_IMAGES = "TweetImages"
 
-val PARAM_USER_ID = "UserId"
-val PARAM_USER_NAME = "UserName"
+val PARAM_USER_ID = "userId"
+val PARAM_USER_NAME = "userName"

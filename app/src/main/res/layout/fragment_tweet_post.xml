@@ -25,7 +25,6 @@
             android:layout_margin="@dimen/dimen_16"
             android:contentDescription="@string/desc_post_an_image"
             android:minHeight="200dp"
-            android:onClick="addImage"
             android:scaleType="center"
             app:layout_constraintTop_toBottomOf="@id/tweetText" />
 
@@ -35,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/grid_3x"
-            android:onClick="addImage"
             app:layout_constraintBottom_toTopOf="@id/fabSend"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/camera" />
@@ -46,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/grid_3x"
-            android:onClick="postTweet"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/send" />
