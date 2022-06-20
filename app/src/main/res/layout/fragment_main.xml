@@ -44,7 +44,8 @@
 
                 <include
                     android:id="@+id/emptyLayout"
-                    layout="@layout/empty_post" />
+                    layout="@layout/empty_post"
+                    />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
