@@ -3,7 +3,8 @@
 Core Features:
 User can see the list of post User tweet after Login
 
-TweetMe app has following features:
+##TweetMe app has following features:
+
 *
     - Sign up, Sign In, and Sign Out
     
