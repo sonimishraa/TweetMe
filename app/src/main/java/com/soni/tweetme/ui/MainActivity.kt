@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
         initUI()
     }
 
+    private fun initUI() {
+        binding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -36,11 +41,6 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun initUI() {
-        binding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 
     fun onSignOut() {
