@@ -35,8 +35,7 @@ class TweetListAdapter(
         tweet: Tweet,
         isLast: Boolean
     ) {
-        binding.tweetUsername.text = tweet.username
-        binding.tweetText.text = tweet.text
+        binding.item = tweet
         binding.tweetImage.updateVisibility(tweet.imageUrl.isNullOrEmpty().not())
         binding.tweetImage.loadUrl(tweet.imageUrl)
         binding.tweetDate.text = getDate(tweet.timestamp)

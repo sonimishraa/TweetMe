@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.soni.tweetme.network.response.Tweet" />
+
+    </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,9 +34,10 @@
                 android:layout_marginTop="8dp"
                 android:paddingStart="@dimen/grid_1x"
                 android:paddingEnd="@dimen/grid_1x"
-                android:text="Username"
+                android:text="@{item.username}"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="userName" />
 
             <!-- VIEW: Text: Tweet -->
             <TextView
@@ -38,9 +47,10 @@
                 android:layout_marginTop="8dp"
                 android:paddingStart="@dimen/grid_1x"
                 android:paddingEnd="@dimen/grid_1x"
-                android:text="Tweet Text"
+                android:text="@{item.text}"
                 android:textSize="@dimen/standard_text_size"
-                app:layout_constraintTop_toBottomOf="@id/tweetUsername" />
+                app:layout_constraintTop_toBottomOf="@id/tweetUsername"
+                tools:text="Tweet Text" />
 
             <!-- VIEW: Image -->
             <ImageView
