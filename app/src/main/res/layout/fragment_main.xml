@@ -23,13 +23,11 @@
                     android:layout_height="match_parent"
                     tools:context=".ui.fragment.MainFragment">
 
-                    <!--  LAYOUT: Swipe-to-Refresh -->
                     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                         android:id="@+id/swipeRefresh"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <!-- VIEW: Recycler -->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/tweetList"
                             android:layout_width="match_parent"
@@ -40,7 +38,13 @@
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:itemCount="5" />
                     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
                 </FrameLayout>
+
+
+                <include
+                    android:id="@+id/emptyLayout"
+                    layout="@layout/empty_post" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
