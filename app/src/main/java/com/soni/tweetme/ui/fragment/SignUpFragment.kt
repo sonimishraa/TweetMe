@@ -36,7 +36,6 @@ class SignUpFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -81,53 +80,38 @@ class SignUpFragment : Fragment() {
         }
     }
 
-
-    /* when LoginActivity starts up, we have to attach this to FirebaseAuth instance
-*  to check if user is already logged-in.
-* */
     override fun onStart() {
         super.onStart()
-        // pass the firebaseAuthListener to see if user is still logged-in
         firebaseAuth.addAuthStateListener(firebaseAuthListener)
     }
 
-
-    /* when screen starts up, we have to detach/remove  this from FirebaseAuth */
     override fun onStop() {
         super.onStop()
         firebaseAuth.removeAuthStateListener(firebaseAuthListener)
     }
 
-
     fun onSignup() {
         var proceed = true
-
-        // Username Check
         if (binding.nameEditText.text.isNullOrEmpty()) {
             binding.nameLayout.error = "Username is required"
             binding.nameLayout.isErrorEnabled = true
             proceed = false
         }
 
-        // Email Check
         if (binding.emailEditText.text.isNullOrEmpty()) {
             binding.emailLayout.error = "Email is required"
             binding.emailLayout.isErrorEnabled = true
             proceed = false
         }
 
-        // Password Check
         if (binding.passwordEditText.text.isNullOrEmpty()) {
             binding.passwordLayout.error = "Password is required"
             binding.passwordLayout.isErrorEnabled = true
             proceed = false
         }
 
-        // if Signup proceeds
         if (proceed) {
             binding.progressLayout.updateVisibility(true)
-
-            // Signup with Firebase Auth
             firebaseAuth.createUserWithEmailAndPassword(
                 binding.emailEditText.text.toString(),
                 binding.passwordEditText.text.toString()
@@ -140,18 +124,9 @@ class SignUpFragment : Fragment() {
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        /* Create User in FirebaseDB */
                         val email = binding.emailEditText.text.toString()
                         val username = binding.nameEditText.text.toString()
-
-                        // User data class Object (from util)
                         val user = User(email, username, "", arrayListOf(), arrayListOf())
-
-                        /* Add 'user' Object to DB:
-                        *  firebaseAuth.uid!! connects the the Auth user and corresponding DB with UID.
-                        *  - Create Collection with DATA_USERS constant
-                        *  - set() will Save 'user' object in Collection.
-                        * */
                         firebaseDB.collection(DATA_USERS).document(firebaseAuth.uid!!).set(user)
                     }
                     binding.progressLayout.updateVisibility(false)
