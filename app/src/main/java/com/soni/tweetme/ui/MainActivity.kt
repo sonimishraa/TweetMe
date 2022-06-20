@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.auth.FirebaseAuth
 import com.soni.tweetme.R
 import com.soni.tweetme.databinding.ActivityMainBinding
 import com.soni.tweetme.viewmodel.MainViewModel
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSignOut() {
-        FirebaseAuth.getInstance().signOut()
+        viewModel.onSignOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }

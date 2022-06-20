@@ -1,7 +1,12 @@
 package com.soni.tweetme.repository
 
-import android.app.Application
+import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
-class TweetRepository @Inject constructor(val application: Application) {
+class TweetRepository @Inject constructor(
+    val firebaseAuth: FirebaseAuth
+) {
+    fun signOut() {
+        firebaseAuth.signOut()
+    }
 }
