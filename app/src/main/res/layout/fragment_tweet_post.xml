@@ -7,8 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.TweetActivity">
-        <!-- Add Tweet -->
-        <EditText
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tweetText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -17,14 +17,13 @@
             android:inputType="text"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Add Image -->
         <ImageView
             android:id="@+id/tweetImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_16"
             android:contentDescription="@string/desc_post_an_image"
-            android:minHeight="200dp"
+            android:minHeight="150dp"
             android:scaleType="center"
             app:layout_constraintTop_toBottomOf="@id/tweetText" />
 
@@ -38,7 +37,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/camera" />
 
-        <!-- Fab-Send -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabSend"
             android:layout_width="wrap_content"
@@ -48,21 +46,19 @@
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/send" />
 
-        <!-- Progress Bar -->
-        <LinearLayout
-            android:id="@+id/tweetProgressLayout"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/progressLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent_grey"
-            android:elevation="5dp"
             android:gravity="center"
-            android:orientation="vertical"
             android:visibility="gone">
 
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

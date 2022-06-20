@@ -29,7 +29,6 @@ class TweetPostFragment : Fragment() {
     private var userName: String? = null
     private lateinit var binding: FragmentTweetPostBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +47,7 @@ class TweetPostFragment : Fragment() {
     private fun initUI() {
         userId = args.userId
         userName = args.userName
-        binding.tweetProgressLayout.setOnTouchListener { _, _ -> true }
+        binding.progressLayout.setOnTouchListener { _, _ -> true }
     }
 
     private fun initListener() {
@@ -84,7 +83,7 @@ class TweetPostFragment : Fragment() {
 
     private fun storeImage(imageUri: Uri?) {
         imageUri?.let {
-            binding.tweetProgressLayout.updateVisibility(true)
+            binding.progressLayout.updateVisibility(true)
 
             // Create 'TweetImages' folder in STORAGE
             val filePath = firebaseStorage.child(DATA_TWEET_IMAGES).child(userId!!)
@@ -99,7 +98,7 @@ class TweetPostFragment : Fragment() {
 
                             imageUrl = uri.toString()
                             binding.tweetImage.loadUrl(imageUrl, R.drawable.logo)
-                            binding.tweetProgressLayout.updateVisibility(false)
+                            binding.progressLayout.updateVisibility(false)
                         }
                         .addOnFailureListener {
                             onTweetImageFail()
@@ -114,15 +113,12 @@ class TweetPostFragment : Fragment() {
     private fun onTweetImageFail() {
         Toast.makeText(requireContext(), "Image tweet failed. Try again..", Toast.LENGTH_SHORT)
             .show()
-        binding.tweetProgressLayout.updateVisibility(false)
+        binding.progressLayout.updateVisibility(false)
     }
 
 
-    // -----------------------------------------//
-    // Post a Tweet
     fun postTweet() {
-        binding.tweetProgressLayout.updateVisibility(true)
-        // GET: data
+        binding.progressLayout.updateVisibility(true)
         val text = binding.tweetText.text.toString()
         val hashtags = getHashtags(text)
 
@@ -143,7 +139,7 @@ class TweetPostFragment : Fragment() {
             .addOnCompleteListener { findNavController().popBackStack() }
             .addOnFailureListener {
                 it.printStackTrace()
-                binding.tweetProgressLayout.updateVisibility(false)
+                binding.progressLayout.updateVisibility(false)
                 Toast.makeText(requireContext(), "Failed to post tweet", Toast.LENGTH_SHORT).show()
             }
     }
@@ -171,12 +167,10 @@ class TweetPostFragment : Fragment() {
                 text = text.substring(firstHash)
             }
 
-            // Add filtered source into List
             if (!hashtag.isNullOrEmpty()) {
                 hashtags.add(hashtag)
             }
         }
-
         return hashtags
     }
 }
