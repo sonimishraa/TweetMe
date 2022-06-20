@@ -16,9 +16,10 @@ TweetMe app has following features:
 *
     - Post/Timeline view page
     
-*
+
 
 How it works:
+
 User can press on Login with Login button from the Login Screen where user can entered their
 credential for the login If user will enter the correct detail, app will fetch the details from the
 Firebase and it will display on the User list of post Screen. If user is first time then user need
@@ -26,6 +27,7 @@ to do sign-up and once user enter the details then it will go to User's List of 
 post a tweet with text and image only
 
 Requirements:
+
 JDK 11 
 Android Stuido Version : Android Studio Dolphin | 2021.3.1 Canary 3
 URL for Android studio download (https://developer.android.com/studio/preview)
