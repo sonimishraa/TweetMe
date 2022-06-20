@@ -21,10 +21,14 @@ TweetMe app has following features:
 How it works:
 
 User can press on Login with Login button from the Login Screen where user can entered their
-credential for the login If user will enter the correct detail, app will fetch the details from the
-Firebase and it will display on the User list of post Screen. If user is first time then user need
-to do sign-up and once user enter the details then it will go to User's List of post screen User can
-post a tweet with text and image only
+credential for the login.
+
+If user will enter the correct detail, app will fetch the details from the
+Firebase and it will display on the user posted lists.
+
+If user is first time then user need
+to  sign-up and after sign-up it will go to user's posted Tweet.
+
 Maximum 150 character's are allowed for text to post
 
 Requirements:
