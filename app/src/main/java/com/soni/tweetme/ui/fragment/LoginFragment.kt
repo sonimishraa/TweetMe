@@ -85,38 +85,28 @@ class LoginFragment : Fragment() {
         firebaseAuth.addAuthStateListener(firebaseAuthListener)
     }
 
-
-    /* when screen starts up, we have to detach/remove  this from FirebaseAuth */
     override fun onStop() {
         super.onStop()
         firebaseAuth.removeAuthStateListener(firebaseAuthListener)
     }
 
-
-    // On-Login
     fun onLogin() {
         var proceed = true
 
-        // Email Check
         if (binding.emailEditText.text.isNullOrEmpty()) {
             binding.emailLayout.error = "Email is required"
             binding.emailLayout.isErrorEnabled = true
             proceed = false
         }
 
-        // Password Check
         if (binding.passwordEditText.text.isNullOrEmpty()) {
             binding.passwordLayout.error = "Password is required"
             binding.passwordLayout.isErrorEnabled = true
             proceed = false
         }
 
-        // if Login proceeds
         if (proceed) {
-            // show progressbar
             binding.progressLayout.updateVisibility(true)
-
-            // login with Firebase Auth
             firebaseAuth.signInWithEmailAndPassword(
                 binding.emailEditText.text.toString(),
                 binding.passwordEditText.text.toString()
