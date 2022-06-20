@@ -1,6 +1,5 @@
 package com.soni.tweetme.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,33 +7,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.soni.tweetme.R
 import com.soni.tweetme.databinding.FragmentLoginBinding
-import com.soni.tweetme.ui.MainActivity
 import com.soni.tweetme.utils.autoCleared
 import com.soni.tweetme.utils.updateVisibility
+import com.soni.tweetme.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var binding by autoCleared<FragmentLoginBinding>()
-    private val firebaseAuth = FirebaseAuth.getInstance()
-
-    private val firebaseAuthListener = FirebaseAuth.AuthStateListener {
-        val user = firebaseAuth.currentUser?.uid
-        user?.let {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
-        }
-    }
+    private val viewModel by activityViewModels<LoginViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -52,6 +42,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun initObserver() {
+        viewModel.networkStatusMutableLiveData.observe(viewLifecycleOwner) {
+            if (true) {
+                binding.progressLayout.updateVisibility(false)
+                Toast.makeText(
+                    requireContext(), "Login Error:", Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     private fun initListener() {
@@ -74,22 +72,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-
-    /* when LoginActivity starts up, we have to attach this to FirebaseAuth instance
-*  to check if user is already logged-in.
-* */
-    override fun onStart() {
-        super.onStart()
-
-        // pass the firebaseAuthListener to see if user is still logged-in
-        firebaseAuth.addAuthStateListener(firebaseAuthListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        firebaseAuth.removeAuthStateListener(firebaseAuthListener)
-    }
-
     fun onLogin() {
         var proceed = true
 
@@ -107,24 +89,9 @@ class LoginFragment : Fragment() {
 
         if (proceed) {
             binding.progressLayout.updateVisibility(true)
-            firebaseAuth.signInWithEmailAndPassword(
-                binding.emailEditText.text.toString(),
-                binding.passwordEditText.text.toString()
+            viewModel.signInWithEmailAndPassword(
+                binding.emailEditText.text.toString(), binding.passwordEditText.text.toString()
             )
-                .addOnCompleteListener {
-                    if (!it.isSuccessful) {
-                        binding.progressLayout.updateVisibility(false)
-                        Toast.makeText(
-                            requireContext(),
-                            "Login Error: ${it.exception?.localizedMessage}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    binding.progressLayout.updateVisibility(false)
-                }
         }
     }
 }
