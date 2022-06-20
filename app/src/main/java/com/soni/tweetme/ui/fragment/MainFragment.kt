@@ -92,6 +92,7 @@ class MainFragment : Fragment() {
         }
 
         viewModel.sortedListMutableLiveData.observe(viewLifecycleOwner) {
+            binding.emptyLayout.emptyView.updateVisibility(it.isEmpty())
             if (::tweetListAdapter.isInitialized) {
                 tweetListAdapter.submitList(it)
             }
