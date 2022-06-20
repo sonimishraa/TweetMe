@@ -1,6 +1,5 @@
 package com.soni.tweetme.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,33 +7,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.soni.tweetme.databinding.FragmentSignupBinding
-import com.soni.tweetme.network.response.User
-import com.soni.tweetme.ui.MainActivity
-import com.soni.tweetme.utils.DATA_USERS
 import com.soni.tweetme.utils.autoCleared
 import com.soni.tweetme.utils.updateVisibility
+import com.soni.tweetme.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
     private var binding by autoCleared<FragmentSignupBinding>()
-
-    private val firebaseDB = FirebaseFirestore.getInstance()
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
-
-    private val firebaseAuthListener = FirebaseAuth.AuthStateListener {
-        val user = firebaseAuth.currentUser?.uid
-        user?.let {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-        }
-    }
+    private val viewModel by activityViewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +42,21 @@ class SignUpFragment : Fragment() {
     }
 
     private fun initObserver() {
+        viewModel.isPBStatusLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.progressLayout.updateVisibility(!it)
+            }
+        }
+
+        viewModel.errorMsgLiveData.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty().not()) {
+                Toast.makeText(
+                    requireContext(),
+                    it,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     private fun initListener() {
@@ -80,16 +81,6 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        firebaseAuth.addAuthStateListener(firebaseAuthListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        firebaseAuth.removeAuthStateListener(firebaseAuthListener)
-    }
-
     fun onSignup() {
         var proceed = true
         if (binding.nameEditText.text.isNullOrEmpty()) {
@@ -112,29 +103,11 @@ class SignUpFragment : Fragment() {
 
         if (proceed) {
             binding.progressLayout.updateVisibility(true)
-            firebaseAuth.createUserWithEmailAndPassword(
+            viewModel.createUserWithEmailAndPassword(
                 binding.emailEditText.text.toString(),
-                binding.passwordEditText.text.toString()
+                binding.passwordEditText.text.toString(),
+                binding.nameEditText.text.toString()
             )
-                .addOnCompleteListener {
-                    if (!it.isSuccessful) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Signup Error: ${it.exception?.localizedMessage}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        val email = binding.emailEditText.text.toString()
-                        val username = binding.nameEditText.text.toString()
-                        val user = User(email, username, "", arrayListOf(), arrayListOf())
-                        firebaseDB.collection(DATA_USERS).document(firebaseAuth.uid!!).set(user)
-                    }
-                    binding.progressLayout.updateVisibility(false)
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    binding.progressLayout.updateVisibility(false)
-                }
         }
     }
 }
