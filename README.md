@@ -25,6 +25,7 @@ credential for the login If user will enter the correct detail, app will fetch t
 Firebase and it will display on the User list of post Screen. If user is first time then user need
 to do sign-up and once user enter the details then it will go to User's List of post screen User can
 post a tweet with text and image only
+Maximum 150 character's are allowed for text to post
 
 Requirements:
 
