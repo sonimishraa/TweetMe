@@ -19,7 +19,7 @@ class TweetListAdapter(
 ) : DataBoundListAdapter<Tweet, ItemTweetBinding>
     (appExecutors = executors, diffcallBack = object : DiffUtil.ItemCallback<Tweet>() {
     override fun areItemsTheSame(oldItem: Tweet, newItem: Tweet): Boolean =
-        oldItem == newItem
+        oldItem.tweetId == newItem.tweetId
 
     override fun areContentsTheSame(oldItem: Tweet, newItem: Tweet): Boolean =
         oldItem == newItem
@@ -46,7 +46,7 @@ class TweetListAdapter(
         binding.tweetDate.text = getDate(tweet.timestamp)
         binding.tweetLikeCount.text = tweet.likes?.size.toString()
 
-        binding.tweetLayout.setOnClickListener { listenerI?.onLayoutClick(tweet) }
+//        binding.tweetLayout.setOnClickListener { listenerI?.onLayoutClick(tweet) }
         binding.tweetLike.setOnClickListener { listenerI?.onLike(tweet) }
         binding.tweetDelete.setOnClickListener { listenerI?.onDelete(tweet) }
 
