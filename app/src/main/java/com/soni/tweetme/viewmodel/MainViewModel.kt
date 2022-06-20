@@ -21,10 +21,16 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val application: Application,
 ) : ViewModel() {
+
     var currentUser: User? = null
     protected val firebaseDB = FirebaseFirestore.getInstance()
     val user = FirebaseAuth.getInstance().currentUser
     val userId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty()
+
+    val tweetImageFailMutableLiveData = MutableLiveData(false)
+    val tweetImageURIMutableLiveData = MutableLiveData<String>()
+
+    private val firebaseStorage = FirebaseStorage.getInstance().reference
 
     val isPBStausMutableLiveData = MutableLiveData(false)
 
@@ -118,8 +124,6 @@ class MainViewModel @Inject constructor(
         return hashtags
     }
 
-    private val firebaseStorage = FirebaseStorage.getInstance().reference
-
     fun storeImage(imageUri: Uri) {
         val filePath = firebaseStorage.child(DATA_TWEET_IMAGES).child(userId)
         // Save into Storage
@@ -139,7 +143,4 @@ class MainViewModel @Inject constructor(
                 tweetImageFailMutableLiveData.postValue(true)
             }
     }
-
-    val tweetImageFailMutableLiveData = MutableLiveData(false)
-    val tweetImageURIMutableLiveData = MutableLiveData<String>()
 }
