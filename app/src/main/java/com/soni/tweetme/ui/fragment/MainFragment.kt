@@ -14,11 +14,15 @@ import com.soni.tweetme.ui.TweetActivity
 import com.soni.tweetme.ui.adapters.TweetListAdapter
 import com.soni.tweetme.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment() {
     private var binding by autoCleared<FragmentMainBinding>()
     lateinit var tweetListAdapter: TweetListAdapter
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +40,7 @@ class MainFragment : BaseFragment() {
     }
 
     private fun initUI() {
-        tweetListAdapter = TweetListAdapter(userId, arrayListOf())
+        tweetListAdapter = TweetListAdapter(userId, appExecutors)
         tweetListAdapter.setListener(
             TwitterListenerImpl(
                 binding.tweetList,
@@ -88,8 +92,10 @@ class MainFragment : BaseFragment() {
                 }
                 val sortedList = tweets.sortedWith(compareByDescending { it.timestamp })
                 Log.i("jaimatadi", "sortedlist = ${sortedList.size}")
-                Log.i("jaimatadi", "tweetsAdapter = ${tweetListAdapter}")
-                tweetListAdapter?.updateTweets(sortedList)
+                if (::tweetListAdapter.isInitialized) {
+                    Log.i("jaimatadi", "tweetsAdapter = ${tweetListAdapter}")
+                    tweetListAdapter.submitList(sortedList)
+                }
                 binding.tweetList.updateVisibility(true)
             }
             .addOnFailureListener {
